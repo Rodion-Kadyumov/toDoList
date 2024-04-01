@@ -1,0 +1,15 @@
+.App {
+  height: 100vh;
+  /* padding: 30px; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 50px;
+}
+
+.App > div {
+  box-sizing: border-box;
+  border: solid 1px;
+  border-radius: 20px;
+  padding: 20px;
+}
