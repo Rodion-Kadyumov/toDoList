@@ -1,3 +1,4 @@
+import { FilterValueType } from "../App"
 import { Button } from "./Button"
 
 export type TaskType = {
@@ -9,9 +10,11 @@ export type TaskType = {
 type ListProps = {
   title: string
   tasks: TaskType[]
+  removeTask: (taskId: number) => void
+  changeFilter: (filter: FilterValueType) => void
 }
 
-export const ToDoList = ({ title, tasks }: ListProps) => {
+export const ToDoList = ({ title, tasks, removeTask, changeFilter }: ListProps) => {
   return (
     <div>
       <h3>{title}</h3>
@@ -28,15 +31,16 @@ export const ToDoList = ({ title, tasks }: ListProps) => {
               <li key={task.id}>
                 <input type="checkbox" checked={task.isDone} />
                 <span>{task.title}</span>
+                <Button title={"x"} onClick={() => removeTask(task.id)} />
               </li>
             )
           })}
         </ul>
       )}
       <div className="btn">
-        <Button title={"All"} />
-        <Button title={"Active"} />
-        <Button title={"Completed"} />
+        <Button title={"All"} onClick={() => changeFilter("all")} />
+        <Button title={"Active"} onClick={() => changeFilter("active")} />
+        <Button title={"Completed"} onClick={() => changeFilter("complited")} />
       </div>
     </div>
   );
