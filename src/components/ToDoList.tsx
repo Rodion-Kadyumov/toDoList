@@ -22,8 +22,9 @@ export const ToDoList = ({ title, tasks, removeTask, changeFilter, addTask }: Li
     setTaskTitle(event.currentTarget.value)
   }
 
+  
   const addtaskOnKeyUpHandler = (event: KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
+    if (event.key === "Enter" && taskTitle && !leng) {
       addTaskHandler()
     }
   }
@@ -38,7 +39,7 @@ export const ToDoList = ({ title, tasks, removeTask, changeFilter, addTask }: Li
     addTask(taskTitle)
     setTaskTitle('')
   }
-  
+  const leng = taskTitle.length > 15
   return (
     <div>
       <h3>{title}</h3>
@@ -48,7 +49,10 @@ export const ToDoList = ({ title, tasks, removeTask, changeFilter, addTask }: Li
               onChange={changeTaskTitleHandler}
               onKeyUp={addtaskOnKeyUpHandler}
               />
-        <Button title={"+"} onClick={addTaskHandler} />
+        <Button title={"+"}
+                onClick={addTaskHandler}
+                disabled={!taskTitle || leng}/>
+        {taskTitle.length > 15 && <div>Task is too long</div>}
       </div>
       {tasks.length === 0 ? (
         <p>Тасок нет</p>
