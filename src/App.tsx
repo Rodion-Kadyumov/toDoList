@@ -18,6 +18,11 @@ function App() {
   }
   const [filter, setFilter] = useState<FilterValueType>('all')
 
+  const changeTaskStatus = (taskId: string, taskStatus: boolean) => {
+    const newState = tasks.map(t => (t.id == taskId ? { ...t, isDone: taskStatus } : t))
+    setTasks(newState)
+  }
+
   let [tasks, setTasks] = useState<TaskType[]> ([
     {id: v1(), title: 'HTML&CSS', isDone: true},
     {id: v1(), title: 'JS', isDone: true},

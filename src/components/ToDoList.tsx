@@ -16,11 +16,16 @@ type ListProps = {
   addTask: (title: string) => void
 }
 
+export const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
+  const newStatusValue = e.currentTarget.checked
+  changeTaskStatus(task.id, newStatusValue)
+}
+
 export const ToDoList = ({ title, tasks, removeTask, changeFilter, addTask }: ListProps) => {
 
-  const changeTaskTitleHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    setTaskTitle(event.currentTarget.value)
-  }
+  // const changeTaskTitleHandler = (event: ChangeEvent<HTMLInputElement>) => {
+  //   setTaskTitle(event.currentTarget.value)
+  // }
 
   
   const addtaskOnKeyUpHandler = (event: KeyboardEvent<HTMLInputElement>) => {
@@ -36,17 +41,21 @@ export const ToDoList = ({ title, tasks, removeTask, changeFilter, addTask }: Li
   const [taskTitle, setTaskTitle] = useState('')
 
   const addTaskHandler = () => {
-    addTask(taskTitle)
-    setTaskTitle('')
+    if (taskTitle.trim() !== '') {
+      addTask(taskTitle.trim())
+      setTaskTitle('')
+    }
   }
+
   const leng = taskTitle.length > 15
+
   return (
     <div>
       <h3>{title}</h3>
       <div>
         <input
               value={taskTitle}
-              onChange={changeTaskTitleHandler}
+              onChange={changeTaskStatusHandler}
               onKeyUp={addtaskOnKeyUpHandler}
               />
         <Button title={"+"}
