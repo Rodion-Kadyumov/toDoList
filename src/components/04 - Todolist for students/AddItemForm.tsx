@@ -1,15 +1,18 @@
-import { Button } from './Button'
 import { ChangeEvent, KeyboardEvent, useState } from 'react'
- 
+import { TextField } from '@mui/material'
+import AddBoxIcon from '@mui/icons-material/AddBox'
+import IconButton from '@mui/material/IconButton'
+
 type PropsType = {
   addItem: (title: string) => void
 }
- 
+
 export const AddItemForm = ({ addItem }: PropsType) => {
+
   const [title, setTitle] = useState('')
   const [error, setError] = useState<string | null>(null)
- 
-  const addItemHandler = () => {
+
+  const addItemHandler = () => { //
     if (title.trim() !== '') {
       addItem(title.trim())
       setTitle('')
@@ -17,29 +20,31 @@ export const AddItemForm = ({ addItem }: PropsType) => {
       setError('Title is required')
     }
   }
- 
-  const changeItemHandler = (event: ChangeEvent<HTMLInputElement>) => {
+
+  const changeItemHandler = (event: ChangeEvent<HTMLInputElement>) => { //
     setTitle(event.currentTarget.value)
   }
- 
-  const addItemOnKeyUpHandler = (event: KeyboardEvent<HTMLInputElement>) => {
+
+  const addItemOnKeyUpHandler = (event: KeyboardEvent<HTMLInputElement>) => { //
     setError(null)
     if (event.key === 'Enter') {
       addItemHandler()
     }
   }
 
-  
   return (
     <div>
-      <input
-        className={error ? 'error' : ''}
+      <TextField
+        label="Enter a title"
+        variant={'outlined'}
         value={title}
+        size={'small'}
+        error={!!error}
+        helperText={error}
         onChange={changeItemHandler}
         onKeyUp={addItemOnKeyUpHandler}
       />
-      <Button title={'+'} onClick={addItemHandler} />
-      {error && <div className={'error-message'}>{error}</div>}
+      <IconButton onClick={addItemHandler} color={'primary'}><AddBoxIcon /></IconButton>
     </div>
   )
 }

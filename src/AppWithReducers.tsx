@@ -1,7 +1,7 @@
 // import './App.css';
 // import { AddItemForm } from './components/04 - Todolist for students/AddItemForm';
 // import { TaskType, ToDoList } from './components/04 - Todolist for students/ToDoList';
-// import { useState } from 'react';
+// import { useState, useReducer } from 'react';
 // import { v1 } from 'uuid';
 // import AppBar from '@mui/material/AppBar'
 // import Toolbar from '@mui/material/Toolbar'
@@ -13,6 +13,8 @@
 // import { createTheme, ThemeProvider } from '@mui/material/styles'
 // import Switch from '@mui/material/Switch'
 // import CssBaseline from '@mui/material/CssBaseline'
+// import { addTaskAC, changeTaskStatusAC, removeTaskAC } from './model/tasks-reducer';
+// import { addTodolistAC, changeTodolistFilterAC, removeTodolistAC } from './model/todolists-reducer';
 
 // export type FilterValueType = "all" | "active" | "complited"
 
@@ -26,9 +28,7 @@
 //   [key: string]: TaskType[]
 // }
 
-// type ThemeMode = 'dark' | 'light' // Светлая и темная темы
-
-// function App() {
+// function AppWithReducers() {
 
 //   const [themeMode, setThemeMode] = useState("light") // Светлая и темная темы
 
@@ -48,12 +48,12 @@
 //   let todolistId1 = v1()
 //   let todolistId2 = v1()
 
-//   let [todolists, setTodolists] = useState<TodoListType[]>([
+//   let [todolists, dispatchTodoListsReducer] = useReducer(todolistsReducer, [
 //     {id: todolistId1, title: "What to learn", filter: "all"},
 //     {id: todolistId2, title: "What to buy", filter: "all"},
 //   ])
 
-//   let [tasks, setTasks] = useState<TasksStateType>({
+//   let [tasks, dispatchToTasksReducer] = useReducer(tasksReducer, {
 //     [todolistId1]: [
 //       { id: v1(), title: 'HTML&CSS', isDone: true },
 //       { id: v1(), title: 'JS', isDone: true },
@@ -66,47 +66,35 @@
 //   })
 
 //   const addTask = (title: string, todolistId: string) => {
-//     let tas = {id: v1(), title: title, isDone: false};
-//     let task = tasks[todolistId];
-//     let newTask = [tas, ...task];
-//     tasks[todolistId] = newTask
-//     setTasks({ ...tasks })
+//     const action = addTaskAC(title, todolistId)
+//     dispatchToTasksReducer(action)
 //   }
 
 //   const removeTask = (taskId: string, todolistId: string) => {
-//     let task = tasks[todolistId];
-//     let filteredTasks = task.filter(t => t.id !== taskId);
-//     tasks[todolistId] = filteredTasks;
-//     setTasks({ ...tasks})
+//     const action = removeTaskAC(taskId, todolistId);
+//     dispatchToTasksReducer(action)
 // }
 
 // const addTodolist = (title: string) => {
-//   const todolistId = v1()
-//   const newTodolist: TodoListType = { id: todolistId, title: title, filter: 'all' }
-//   setTodolists([newTodolist, ...todolists])
-//   setTasks({ ...tasks, [todolistId]: [] })
+//   const action = addTodolistAC(title);
+//   dispatchToTasksReducer(action)
+//   dispatchTodoListsReducer(action)
 // }
 
 // const removeTodolist = (todolistId: string) => {
-//   const newTodolists = todolists.filter(tl => tl.id !== todolistId)
-//   setTodolists(newTodolists)
-//   // удалим таски для тудулиста из стейта где мы храним таски
-//   delete tasks[todolistId]
-//   // засетаем в state копию объекта
-//   setTasks({ ...tasks })
+//   const action = removeTodolistAC(todolistId);
+//   dispatchToTasksReducer(action)
+//   dispatchTodoListsReducer(action)
 // }
 
-//   const changeFilter = (todolistId: string, filter: FilterValueType) => {
-//     setTodolists(todolists.map(tl => (tl.id === todolistId ? { ...tl, filter } : tl)))
+//   const changeFilter = (filter: FilterValueType, todolistId: string) => {
+//     const action = changeTodolistFilterAC(filter, todolistId)
+//     dispatchToTasksReducer(action);
 //   }
 
 //   const changeStatus = (taskId: string, isDone: boolean, todolistId: string) => {
-//     let task = tasks[todolistId];
-//     let tas = task.find(t=> t.id === taskId);
-//     if(tas) {
-//       tas.isDone = isDone;
-//       setTasks({ ...tasks})
-//     }
+//     const action = changeTaskStatusAC(taskId, isDone, todolistId)
+//     dispatchToTasksReducer(action);
 //   }
 
 //   const updateTask = (todolistId: string, taskId: string, title: string) => {
@@ -182,4 +170,4 @@
 //   )
 // }
 
-// export default App;
+// export default AppWithReducers;
